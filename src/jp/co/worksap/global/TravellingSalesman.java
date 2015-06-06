@@ -42,32 +42,41 @@ public class TravellingSalesman {
             columnNo = 0;
 
             br = new BufferedReader(new FileReader(filename));
-
             // get dimensions
             while ((line = br.readLine()) != null) {
                 rowNo++;
                 columnNo = line.length();
             }
             map = new short[rowNo][columnNo];
+            br.close();
 
-            br.reset();
+            br = new BufferedReader(new FileReader(filename));
             int k = 0;
             while ((line = br.readLine()) != null) {
                 for (int i = 0; i < line.length(); i++) {
-                    if ("S".equals(line.charAt(i))) {
-                        map[i][k] = START;
-                        startPoint = new Coordinate(i, k);
-                    } else if ("G".equals(line.charAt(i))) {
-                        map[i][k] = END;
-                        endPoint = new Coordinate(i, k);
-                    } else if ("@".equals(line.charAt(i))) {
-                        map[i][k] = CHECKPOINT;
-                        checkpointList.add(new Coordinate(i, k));
-                    } else if (".".equals(line.charAt(i))) {
-                        map[i][k] = OPEN_BLOCK;
-                    } else if ("#".equals(line.charAt(i))) {
-                        map[i][k] = CLOSED_BLOCK;
+                    switch (line.charAt(i)) {
+                        case 'S':
+                            map[k][i] = START;
+                            startPoint = new Coordinate(i, k);
+                            break;
+                        case 'G':
+                            map[k][i] = END;
+                            endPoint = new Coordinate(i, k);
+                            break;
+                        case '@':
+                            map[k][i] = CHECKPOINT;
+                            checkpointList.add(new Coordinate(i, k));
+                            break;
+                        case '.':
+                            map[k][i] = OPEN_BLOCK;
+                            break;
+                        case '#':
+                            map[k][i] = CLOSED_BLOCK;
+                            break;
+                        default:
+                            break;
                     }
+
                 }
                 k++;
             }
@@ -85,10 +94,11 @@ public class TravellingSalesman {
     }
 
     public void getSolution() {
-        List<Coordinate> coordinates = checkpointList;
-        coordinates.add(0, startPoint);
-        CalObj finalObj = calCost(coordinates, endPoint);
-        System.out.println(finalObj);
+//        List<Coordinate> coordinates = checkpointList;
+        getPath(startPoint, endPoint);
+//        coordinates.add(0, startPoint);
+//        CalObj finalObj = calCost(coordinates, endPoint);
+//        System.out.println(finalObj);
     }
 
     public CalObj calCost(List<Coordinate> coordinates, Coordinate destination) {
@@ -127,15 +137,15 @@ public class TravellingSalesman {
                 pathNotFound = true;
                 break;
             }
+            rawPath.add(currentCoordinate);
 
             List<Coordinate> adjCoordinates = this.getAdjCoordinate(currentCoordinate);
             for (Coordinate coordinate : adjCoordinates) {
-                if (!rawPath.contains(coordinate)) {
+                if (!rawPath.contains(coordinate) && !stack.contains(coordinate)) {
                     coordinate.setValue(this.getHeuristicValue(coordinate));
                     this.push(stack, coordinate);
                 }
             }
-            rawPath.add(currentCoordinate);
 
             if (currentCoordinate.equals(endPoint)) {
                 break;
@@ -145,8 +155,8 @@ public class TravellingSalesman {
         if (pathNotFound) {
             return resultPath;
         } else {
-            resultPath.add(rawPath.get(rawPath.size() - 1));
-            Coordinate temp = rawPath.get(0);
+            Coordinate temp = rawPath.get(rawPath.size() - 1);
+            resultPath.add(temp);
             while (temp.parent != null) {
                 temp = temp.parent;
                 resultPath.add(0, temp);
@@ -160,16 +170,16 @@ public class TravellingSalesman {
         int x = coordinate.x;
         int y = coordinate.y;
         List<Coordinate> result = new ArrayList<Coordinate>(4);
-        if (x + 1 < rowNo && map[x + 1][y] != CLOSED_BLOCK) {
+        if (x + 1 < columnNo && map[y][x + 1] != CLOSED_BLOCK) {
             result.add(new Coordinate(x + 1, y, coordinate));
         }
-        if (x - 1 >= 0 && map[x - 1][y] != CLOSED_BLOCK) {
+        if (x - 1 >= 0 && map[y][x - 1] != CLOSED_BLOCK) {
             result.add(new Coordinate(x - 1, y, coordinate));
         }
-        if (y + 1 < columnNo && map[x][y + 1] != CLOSED_BLOCK) {
+        if (y + 1 < rowNo && map[y + 1][x] != CLOSED_BLOCK) {
             result.add(new Coordinate(x, y + 1, coordinate));
         }
-        if (y - 1 < rowNo && map[x][y - 1] != CLOSED_BLOCK) {
+        if (y - 1 >= 0 && map[y - 1][x] != CLOSED_BLOCK) {
             result.add(new Coordinate(x, y - 1, coordinate));
         }
         return result;
@@ -182,7 +192,7 @@ public class TravellingSalesman {
     public void push(List<Coordinate> stack, Coordinate coordinate) {
         int i;
         for (i = 0; i < stack.size(); i++) {
-            if (coordinate.getTotalValue() > stack.get(i).getTotalValue()) {
+            if (coordinate.getTotalValue() <= stack.get(i).getTotalValue()) {
                 break;
             }
         }
@@ -249,8 +259,10 @@ public class TravellingSalesman {
             return value + distance;
         }
 
-        public boolean equals(Coordinate coordinate) {
-            return this.x == coordinate.x && this.y == coordinate.y;
+        @Override
+        public boolean equals(Object obj) {
+            Coordinate coordinate = (Coordinate) obj;
+            return (this.x == coordinate.x && this.y == coordinate.y);
         }
 
         public String toString() {
