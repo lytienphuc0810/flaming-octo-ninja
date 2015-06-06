@@ -94,11 +94,12 @@ public class TravellingSalesman {
     }
 
     public void getSolution() {
-//        List<Coordinate> coordinates = checkpointList;
-        getPath(startPoint, endPoint);
-//        coordinates.add(0, startPoint);
-//        CalObj finalObj = calCost(coordinates, endPoint);
-//        System.out.println(finalObj);
+//        System.out.println(this.getPath(new Coordinate(2, 3), new Coordinate(2, 1)));
+        List<Coordinate> coordinates = checkpointList;
+        coordinates.add(0, startPoint);
+        coordinates.add(endPoint);
+        CalObj finalObj = calCost(coordinates, endPoint);
+        System.out.println("final result " + finalObj.toString());
     }
 
     public CalObj calCost(List<Coordinate> coordinates, Coordinate destination) {
@@ -107,23 +108,39 @@ public class TravellingSalesman {
             return new CalObj(getPath(coordinates.get(0), coordinates.get(1)).size(), coordinates);
         } else {
             int min = -1;
-            CalObj tempObj = null;
-            List<Coordinate> sub = coordinates.subList(0, coordinates.size() - 1);
+            CalObj minObj = null;
+            Coordinate minCoordinate = null;
+
+            List<Coordinate> sub = this.cloneList(coordinates);
             sub.remove(destination);
+
             for (Coordinate coordinate : coordinates) {
                 if (!coordinate.equals(startPoint) && !coordinate.equals(destination)) {
-                    tempObj = calCost(sub, coordinate);
+                    CalObj tempObj = calCost(sub, coordinate);
+                    System.out.println(tempObj);
                     int temp = tempObj.getValue() + getPath(coordinate, destination).size();
                     if (min == -1 || min > temp) {
                         min = temp;
+                        minObj = tempObj;
                     }
                 }
             }
-            return tempObj;
+
+            minObj.getSubPath().add(destination);
+            minObj.setValue(min);
+            return minObj;
         }
     }
 
-    public List<Coordinate> getPath(Coordinate start, Coordinate end) {
+    public List<Coordinate> cloneList(List<Coordinate> coordinates) {
+        List<Coordinate> result = new ArrayList<Coordinate>();
+        for (Coordinate coordinate : coordinates) {
+            result.add(coordinate);
+        }
+        return result;
+    }
+
+    public List<Coordinate> getPath(Coordinate start, Coordinate destination) {
         List<Coordinate> rawPath = new ArrayList<Coordinate>();
         List<Coordinate> resultPath = new ArrayList<Coordinate>();
         List<Coordinate> stack = new ArrayList<Coordinate>();
@@ -147,7 +164,7 @@ public class TravellingSalesman {
                 }
             }
 
-            if (currentCoordinate.equals(endPoint)) {
+            if (currentCoordinate.equals(destination)) {
                 break;
             }
         }
@@ -293,6 +310,11 @@ public class TravellingSalesman {
         public CalObj(int value, List<Coordinate> coordinates) {
             this.value = value;
             this.subPath = coordinates;
+        }
+
+        @Override
+        public String toString() {
+            return this.value + ": " + this.subPath.toString();
         }
     }
 }
