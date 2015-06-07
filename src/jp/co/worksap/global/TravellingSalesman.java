@@ -3,6 +3,7 @@ package jp.co.worksap.global;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,31 +34,31 @@ public class TravellingSalesman {
         checkpointList = new ArrayList<Coordinate>();
     }
 
-    public void readFile(String filename) throws InvalidInputException {
+    public void readFile() throws InvalidInputException {
         BufferedReader br = null;
 
         try {
-            String line;
+            String string;
             rowNo = 0;
             columnNo = 0;
 
-            br = new BufferedReader(new FileReader(filename));
+            br = new BufferedReader(new InputStreamReader(System.in));
+
             // get dimensions
-            while ((line = br.readLine()) != null) {
+            List<String> strings = new ArrayList<String>();
+            while ((string = br.readLine()) != null) {
                 rowNo++;
-                columnNo = line.length();
+                columnNo = string.length();
+                strings.add(string);
             }
 
             if (rowNo > 100 || rowNo < 1 || columnNo > 100 || columnNo < 1) {
                 throw new InvalidInputException();
             }
-
             map = new short[rowNo][columnNo];
-            br.close();
 
-            br = new BufferedReader(new FileReader(filename));
             int k = 0;
-            while ((line = br.readLine()) != null) {
+            for (String line : strings) {
                 for (int i = 0; i < line.length(); i++) {
                     switch (line.charAt(i)) {
                         case 'S':
