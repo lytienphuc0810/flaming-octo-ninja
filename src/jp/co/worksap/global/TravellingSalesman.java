@@ -22,23 +22,18 @@ public class TravellingSalesman {
     private int columnNo;
 
     private Map<String, List<Coordinate>> cache;
+    private short[][] map;
+    private List<Coordinate> checkpointList;
+    private Coordinate startPoint;
+    private Coordinate endPoint;
 
-    public TravellingSalesman(String filename) {
+    public TravellingSalesman() {
         this.map = null;
         cache = new HashMap<String, List<Coordinate>>();
         checkpointList = new ArrayList<Coordinate>();
-        this.readFile(filename);
     }
 
-    private short[][] map;
-
-    private List<Coordinate> checkpointList;
-
-    private Coordinate startPoint;
-
-    private Coordinate endPoint;
-
-    public void readFile(String filename) {
+    public void readFile(String filename) throws InvalidInputException {
         BufferedReader br = null;
 
         try {
@@ -52,6 +47,11 @@ public class TravellingSalesman {
                 rowNo++;
                 columnNo = line.length();
             }
+
+            if (rowNo > 100 || rowNo < 1 || columnNo > 100 || columnNo < 1) {
+                throw new InvalidInputException();
+            }
+
             map = new short[rowNo][columnNo];
             br.close();
 
@@ -61,10 +61,16 @@ public class TravellingSalesman {
                 for (int i = 0; i < line.length(); i++) {
                     switch (line.charAt(i)) {
                         case 'S':
+                            if (startPoint != null) {
+                                throw new InvalidInputException();
+                            }
                             map[k][i] = START;
                             startPoint = new Coordinate(i, k);
                             break;
                         case 'G':
+                            if (endPoint != null) {
+                                throw new InvalidInputException();
+                            }
                             map[k][i] = END;
                             endPoint = new Coordinate(i, k);
                             break;
@@ -79,14 +85,19 @@ public class TravellingSalesman {
                             map[k][i] = CLOSED_BLOCK;
                             break;
                         default:
-                            break;
+                            throw new InvalidInputException();
                     }
 
                 }
                 k++;
             }
+
+            if (checkpointList.size() > 18) {
+                throw new InvalidInputException();
+            }
+
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new InvalidInputException();
         } finally {
             try {
                 if (br != null) {
@@ -98,23 +109,19 @@ public class TravellingSalesman {
         }
     }
 
-    public void getSolution() {
+    public CalObj getSolution() throws PathNotFoundException {
         List<Coordinate> coordinates = checkpointList;
         coordinates.add(0, startPoint);
         coordinates.add(endPoint);
-        CalObj finalObj = null;
-        try {
-            finalObj = calCost(coordinates, endPoint);
-            System.out.println("final result " + finalObj.toString());
-        } catch (PathNotFoundException e) {
-            System.out.println("Path not found: " + e.getMessage());
-        }
+        CalObj finalObj = calCost(coordinates, endPoint);
+        return finalObj;
     }
 
     public CalObj calCost(List<Coordinate> coordinates, Coordinate destination) throws PathNotFoundException {
         // TODO get path here input into finalObj
         if (coordinates.size() == 2) {
-            return new CalObj(getPathWithCache(coordinates.get(0), coordinates.get(1)).size(), coordinates);
+            // minus 1 because of trench problem
+            return new CalObj(getPathLength(coordinates.get(0), coordinates.get(1)), coordinates);
         } else {
             int min = -1;
             CalObj minObj = null;
@@ -125,8 +132,7 @@ public class TravellingSalesman {
             for (Coordinate coordinate : coordinates) {
                 if (!coordinate.equals(startPoint) && !coordinate.equals(destination)) {
                     CalObj tempObj = calCost(sub, coordinate);
-                    //System.out.println(tempObj);
-                    int temp = tempObj.getValue() + getPathWithCache(coordinate, destination).size();
+                    int temp = tempObj.getValue() + getPathLength(coordinate, destination);
                     if (min == -1 || min > temp) {
                         min = temp;
                         minObj = tempObj;
@@ -148,13 +154,16 @@ public class TravellingSalesman {
         return result;
     }
 
+    public int getPathLength(Coordinate start, Coordinate destination) throws PathNotFoundException {
+        return getPathWithCache(start, destination).size() - 1;
+    }
+
     public List<Coordinate> getPathWithCache(Coordinate start, Coordinate destination) throws PathNotFoundException {
         String key = start.toString() + destination.toString();
         String revertKey = destination.toString() + start.toString();
 
         List<Coordinate> result = null;
         if (cache.containsKey(key)) {
-            //System.out.println("use cache");
             return cache.get(key);
         } else if (cache.containsKey(revertKey)) {
             List<Coordinate> revertPath = cache.get(revertKey);
@@ -162,7 +171,6 @@ public class TravellingSalesman {
             for (int i = revertPath.size() - 1; i >= 0; i--) {
                 result.add(revertPath.get(i));
             }
-            //System.out.println("use revert cache");
         } else {
             result = this.getPath(start, destination);
         }
@@ -256,6 +264,12 @@ public class TravellingSalesman {
     }
 
     public class Coordinate {
+        private Coordinate parent;
+        private int x;
+        private int y;
+        private int value;
+        private int distance;
+
         public Coordinate(int x, int y) {
             this.x = x;
             this.y = y;
@@ -296,12 +310,6 @@ public class TravellingSalesman {
             this.value = value;
         }
 
-        private Coordinate parent;
-        private int x;
-        private int y;
-        private int value;
-        private int distance;
-
         public int getTotalValue() {
             return value + distance;
         }
@@ -321,6 +329,11 @@ public class TravellingSalesman {
         private int value;
         private List<Coordinate> subPath;
 
+        public CalObj(int value, List<Coordinate> coordinates) {
+            this.value = value;
+            this.subPath = coordinates;
+        }
+
         public int getValue() {
             return value;
         }
@@ -337,15 +350,14 @@ public class TravellingSalesman {
             this.subPath = subPath;
         }
 
-        public CalObj(int value, List<Coordinate> coordinates) {
-            this.value = value;
-            this.subPath = coordinates;
-        }
-
         @Override
         public String toString() {
             return this.value + ": " + this.subPath.toString();
         }
+    }
+
+    public class InvalidInputException extends Exception {
+
     }
 
     public class PathNotFoundException extends Exception {
