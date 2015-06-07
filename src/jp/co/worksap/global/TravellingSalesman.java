@@ -125,7 +125,7 @@ public class TravellingSalesman {
             for (Coordinate coordinate : coordinates) {
                 if (!coordinate.equals(startPoint) && !coordinate.equals(destination)) {
                     CalObj tempObj = calCost(sub, coordinate);
-                    System.out.println(tempObj);
+                    //System.out.println(tempObj);
                     int temp = tempObj.getValue() + getPathWithCache(coordinate, destination).size();
                     if (min == -1 || min > temp) {
                         min = temp;
@@ -154,7 +154,7 @@ public class TravellingSalesman {
 
         List<Coordinate> result = null;
         if (cache.containsKey(key)) {
-            System.out.println("use cache");
+            //System.out.println("use cache");
             return cache.get(key);
         } else if (cache.containsKey(revertKey)) {
             List<Coordinate> revertPath = cache.get(revertKey);
@@ -162,7 +162,7 @@ public class TravellingSalesman {
             for (int i = revertPath.size() - 1; i >= 0; i--) {
                 result.add(revertPath.get(i));
             }
-            System.out.println("use revert cache");
+            //System.out.println("use revert cache");
         } else {
             result = this.getPath(start, destination);
         }
