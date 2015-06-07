@@ -35,10 +35,12 @@
       <file leaf-file-name="TravellingSalesman.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/jp/co/worksap/global/TravellingSalesman.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.2783966">
-              <caret line="166" column="32" selection-start-line="166" selection-start-column="32" selection-end-line="166" selection-end-column="32" />
+            <state vertical-scroll-proportion="0.5991091">
+              <caret line="110" column="9" selection-start-line="110" selection-start-column="9" selection-end-line="110" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#11061#11062#0" expanded="true" />
+                <element signature="e#11104#11105#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -114,9 +116,7 @@
       <autoscrollFromSource />
       <sortByType />
     </navigator>
-    <panes>
-      <pane id="Scratches" />
-    </panes>
+    <panes />
   </component>
   <component name="PropertiesComponent">
     <property name="GoToClass.includeLibraries" value="false" />
@@ -214,13 +214,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32934928" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.36653388" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.36653388" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -266,7 +266,7 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="44" />
+      <option name="time" value="45" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -289,6 +289,8 @@
           <caret line="96" column="87" selection-start-line="96" selection-start-column="87" selection-end-line="96" selection-end-column="87" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#11061#11062#0" expanded="true" />
+            <element signature="e#11104#11105#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -315,6 +317,8 @@
           <caret line="175" column="58" selection-start-line="175" selection-start-column="58" selection-end-line="175" selection-end-column="58" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#11061#11062#0" expanded="true" />
+            <element signature="e#11104#11105#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -333,6 +337,8 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#11061#11062#0" expanded="true" />
+            <element signature="e#11104#11105#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -359,6 +365,8 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#11061#11062#0" expanded="true" />
+            <element signature="e#11104#11105#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -377,6 +385,8 @@
           <caret line="273" column="27" selection-start-line="273" selection-start-column="27" selection-end-line="273" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#11061#11062#0" expanded="true" />
+            <element signature="e#11104#11105#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -395,6 +405,8 @@
           <caret line="273" column="27" selection-start-line="273" selection-start-column="27" selection-end-line="273" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#11061#11062#0" expanded="true" />
+            <element signature="e#11104#11105#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -413,6 +425,8 @@
           <caret line="88" column="16" selection-start-line="88" selection-start-column="16" selection-end-line="88" selection-end-column="16" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#11061#11062#0" expanded="true" />
+            <element signature="e#11104#11105#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -431,6 +445,8 @@
           <caret line="11" column="32" selection-start-line="11" selection-start-column="32" selection-end-line="11" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#11061#11062#0" expanded="true" />
+            <element signature="e#11104#11105#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -449,6 +465,8 @@
           <caret line="85" column="68" selection-start-line="85" selection-start-column="68" selection-end-line="85" selection-end-column="68" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#11061#11062#0" expanded="true" />
+            <element signature="e#11104#11105#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -467,6 +485,8 @@
           <caret line="37" column="20" selection-start-line="37" selection-start-column="20" selection-end-line="37" selection-end-column="20" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#11061#11062#0" expanded="true" />
+            <element signature="e#11104#11105#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -489,10 +509,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/jp/co/worksap/global/TravellingSalesman.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.2783966">
-          <caret line="166" column="32" selection-start-line="166" selection-start-column="32" selection-end-line="166" selection-end-column="32" />
+        <state vertical-scroll-proportion="0.5991091">
+          <caret line="110" column="9" selection-start-line="110" selection-start-column="9" selection-end-line="110" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#11061#11062#0" expanded="true" />
+            <element signature="e#11104#11105#0" expanded="true" />
           </folding>
         </state>
       </provider>

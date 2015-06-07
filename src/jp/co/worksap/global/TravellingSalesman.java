@@ -102,11 +102,16 @@ public class TravellingSalesman {
         List<Coordinate> coordinates = checkpointList;
         coordinates.add(0, startPoint);
         coordinates.add(endPoint);
-        CalObj finalObj = calCost(coordinates, endPoint);
-        System.out.println("final result " + finalObj.toString());
+        CalObj finalObj = null;
+        try {
+            finalObj = calCost(coordinates, endPoint);
+            System.out.println("final result " + finalObj.toString());
+        } catch (PathNotFoundException e) {
+            System.out.println("Path not found: " + e.getMessage());
+        }
     }
 
-    public CalObj calCost(List<Coordinate> coordinates, Coordinate destination) {
+    public CalObj calCost(List<Coordinate> coordinates, Coordinate destination) throws PathNotFoundException {
         // TODO get path here input into finalObj
         if (coordinates.size() == 2) {
             return new CalObj(getPathWithCache(coordinates.get(0), coordinates.get(1)).size(), coordinates);
@@ -143,12 +148,13 @@ public class TravellingSalesman {
         return result;
     }
 
-    public List<Coordinate> getPathWithCache(Coordinate start, Coordinate destination) {
+    public List<Coordinate> getPathWithCache(Coordinate start, Coordinate destination) throws PathNotFoundException {
         String key = start.toString() + destination.toString();
         String revertKey = destination.toString() + start.toString();
 
         List<Coordinate> result = null;
         if (cache.containsKey(key)) {
+            System.out.println("use cache");
             return cache.get(key);
         } else if (cache.containsKey(revertKey)) {
             List<Coordinate> revertPath = cache.get(revertKey);
@@ -156,15 +162,15 @@ public class TravellingSalesman {
             for (int i = revertPath.size() - 1; i >= 0; i--) {
                 result.add(revertPath.get(i));
             }
-            cache.put(key, result);
-            return result;
+            System.out.println("use revert cache");
         } else {
             result = this.getPath(start, destination);
-            return result;
         }
+        cache.put(key, result);
+        return result;
     }
 
-    public List<Coordinate> getPath(Coordinate start, Coordinate destination) {
+    public List<Coordinate> getPath(Coordinate start, Coordinate destination) throws PathNotFoundException {
         List<Coordinate> rawPath = new ArrayList<Coordinate>();
         List<Coordinate> resultPath = new ArrayList<Coordinate>();
         List<Coordinate> stack = new ArrayList<Coordinate>();
@@ -194,7 +200,7 @@ public class TravellingSalesman {
         }
 
         if (pathNotFound) {
-            return resultPath;
+            throw new PathNotFoundException(start, destination);
         } else {
             Coordinate temp = rawPath.get(rawPath.size() - 1);
             resultPath.add(temp);
@@ -339,6 +345,18 @@ public class TravellingSalesman {
         @Override
         public String toString() {
             return this.value + ": " + this.subPath.toString();
+        }
+    }
+
+    public class PathNotFoundException extends Exception {
+        private String message;
+
+        public PathNotFoundException(Coordinate start, Coordinate destination) {
+            message = "[" + start.toString() + destination.toString() + "]";
+        }
+
+        public String getMessage() {
+            return this.message;
         }
     }
 }
