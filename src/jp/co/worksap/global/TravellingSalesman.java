@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by phucly on 6/4/15.
@@ -19,8 +21,11 @@ public class TravellingSalesman {
     private int rowNo;
     private int columnNo;
 
+    private Map<String, List<Coordinate>> cache;
+
     public TravellingSalesman(String filename) {
         this.map = null;
+        cache = new HashMap<String, List<Coordinate>>();
         checkpointList = new ArrayList<Coordinate>();
         this.readFile(filename);
     }
@@ -94,7 +99,6 @@ public class TravellingSalesman {
     }
 
     public void getSolution() {
-//        System.out.println(this.getPath(new Coordinate(2, 3), new Coordinate(2, 1)));
         List<Coordinate> coordinates = checkpointList;
         coordinates.add(0, startPoint);
         coordinates.add(endPoint);
@@ -105,11 +109,10 @@ public class TravellingSalesman {
     public CalObj calCost(List<Coordinate> coordinates, Coordinate destination) {
         // TODO get path here input into finalObj
         if (coordinates.size() == 2) {
-            return new CalObj(getPath(coordinates.get(0), coordinates.get(1)).size(), coordinates);
+            return new CalObj(getPathWithCache(coordinates.get(0), coordinates.get(1)).size(), coordinates);
         } else {
             int min = -1;
             CalObj minObj = null;
-            Coordinate minCoordinate = null;
 
             List<Coordinate> sub = this.cloneList(coordinates);
             sub.remove(destination);
@@ -118,7 +121,7 @@ public class TravellingSalesman {
                 if (!coordinate.equals(startPoint) && !coordinate.equals(destination)) {
                     CalObj tempObj = calCost(sub, coordinate);
                     System.out.println(tempObj);
-                    int temp = tempObj.getValue() + getPath(coordinate, destination).size();
+                    int temp = tempObj.getValue() + getPathWithCache(coordinate, destination).size();
                     if (min == -1 || min > temp) {
                         min = temp;
                         minObj = tempObj;
@@ -138,6 +141,27 @@ public class TravellingSalesman {
             result.add(coordinate);
         }
         return result;
+    }
+
+    public List<Coordinate> getPathWithCache(Coordinate start, Coordinate destination) {
+        String key = start.toString() + destination.toString();
+        String revertKey = destination.toString() + start.toString();
+
+        List<Coordinate> result = null;
+        if (cache.containsKey(key)) {
+            return cache.get(key);
+        } else if (cache.containsKey(revertKey)) {
+            List<Coordinate> revertPath = cache.get(revertKey);
+            result = new ArrayList<Coordinate>();
+            for (int i = revertPath.size() - 1; i >= 0; i--) {
+                result.add(revertPath.get(i));
+            }
+            cache.put(key, result);
+            return result;
+        } else {
+            result = this.getPath(start, destination);
+            return result;
+        }
     }
 
     public List<Coordinate> getPath(Coordinate start, Coordinate destination) {
