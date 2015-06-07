@@ -14,12 +14,14 @@ public class Orienteering {
             salesman.readFile(args[0]);
         } catch (TravellingSalesman.InvalidInputException e) {
             System.out.println("-1");
+            return;
         }
         try {
             TravellingSalesman.CalObj solution = salesman.getSolution();
             System.out.println(solution.getValue());
         } catch (TravellingSalesman.PathNotFoundException e) {
             System.out.println("-1");
+            return;
         }
     }
 }

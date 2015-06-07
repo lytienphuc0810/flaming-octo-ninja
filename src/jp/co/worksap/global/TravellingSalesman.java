@@ -92,7 +92,7 @@ public class TravellingSalesman {
                 k++;
             }
 
-            if (checkpointList.size() > 18) {
+            if (checkpointList.size() > 18 || startPoint == null || endPoint == null) {
                 throw new InvalidInputException();
             }
 
